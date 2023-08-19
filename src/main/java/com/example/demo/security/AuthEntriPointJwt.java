@@ -25,6 +25,7 @@ public class AuthEntriPointJwt implements AuthenticationEntryPoint{
 		// TODO Auto-generated method stub
 		LOG.error("----------------------- Unatorized Error {}",authException.getMessage());
 		LOG.error(request.getServletPath());
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 

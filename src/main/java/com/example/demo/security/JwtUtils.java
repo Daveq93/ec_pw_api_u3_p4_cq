@@ -1,15 +1,11 @@
 package com.example.demo.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-
-import java.util.Date;
-
+import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 /*
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +44,20 @@ public class JwtUtils {
 	
 	public boolean validateJWtToken(String token) {
 		//Jwts.parset().setSigningKey(jwtSecret).parseClaimsJws(token);
+		boolean flag = false;
+		try {
 		Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-		return true;
+		flag = true;
+		}catch(ExpiredJwtException e) {
+			log.error("Token expirado: "+e.getMessage());
+		}catch(SignatureException e) {
+			log.error("Token invalido: "+e.getMessage());
+		}
+		return flag;
+	}
+	
+	//obtener el nombre a partir del token
+	public String getUserNameFromJwtToken(String token) {
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
 }
