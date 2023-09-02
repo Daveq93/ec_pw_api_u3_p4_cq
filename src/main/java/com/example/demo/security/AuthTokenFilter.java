@@ -3,6 +3,11 @@ package com.example.demo.security;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,25 +15,21 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-//import io.micrometer.common.util.StringUtils;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AuthTokenFilter extends OncePerRequestFilter {
-
+public class AuthTokenFilter extends OncePerRequestFilter{
+	
 	@Autowired
 	private JwtUtils jwtUtils;
 
 	// Intercepta
 	// se debe ejecutar antes de que se ejecute el api
+	
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//validacion de si el token es valido
 		try {
 			String jwt = this.parseJwt(request);
@@ -49,6 +50,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		}
 		filterChain.doFilter(request, response);// procese lo que hemos camellado
 	}
+	
 	// el token se debe enviar en un header llamado Autorized
 	// el valor del token debe venir con la siguiente nomenclatura
 	// Bearer ...........token.........
@@ -64,5 +66,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		}
 		return null;
 	}
+
+
 
 }

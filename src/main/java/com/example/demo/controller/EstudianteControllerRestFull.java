@@ -47,6 +47,7 @@ public class EstudianteControllerRestFull {
 //	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable(name="cedula") String cedula) {
 //		return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
 //	}
+	
 
 	@GetMapping(path = "/{cedula}")
 	// Response entity es un wrapper
@@ -54,17 +55,26 @@ public class EstudianteControllerRestFull {
 	//	return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	//}
 
-	@PostMapping(consumes = "application/xml") // Requestbody => digo que Estudiante debe venir en el cuerpo del request
-	public void guardar(@RequestBody Estudiante estudiante) {
-		this.estudianteService.guardar(estudiante);
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE) // Requestbody => digo que Estudiante debe venir en el cuerpo del request
+	public ResponseEntity<Estudiante> guardar(@RequestBody Estudiante estudiante) {
+		System.out.println("estu a guardar: "+estudiante.toString());
+		return new ResponseEntity<>(this.estudianteService.guardar(estudiante),null,HttpStatus.OK);
 	}
 
-	@PutMapping(path = "/{id}")
-	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante,
-			@PathVariable(name = "id") Integer identificador) {
-		estudiante.setId(identificador);
-		return ResponseEntity.ok(this.estudianteService.actualizar(estudiante));
+//	@PutMapping(path = "/{id}")
+//	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante,
+//			@PathVariable(name = "id") Integer identificador) {
+//		estudiante.setId(identificador);
+//		return ResponseEntity.ok(this.estudianteService.actualizar(estudiante));
+//	}
+	
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante) {
+		return new ResponseEntity<>(this.estudianteService.actualizar(estudiante),null,HttpStatus.OK);
+		
 	}
+	
+	
 
 	@PatchMapping(path = "/{cedula}")
 	public ResponseEntity<Integer> actualizarParcial(@RequestBody Estudiante estudiante,

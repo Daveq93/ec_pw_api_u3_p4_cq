@@ -23,9 +23,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	}
 
 	@Override
-	public void guardar(Estudiante estudiante) {
+	public Estudiante guardar(Estudiante estudiante) {
 		// TODO Auto-generated method stub
-		this.estudianteRepo.insertarEstudiante(estudiante);
+		return this.estudianteRepo.insertarEstudiante(estudiante);
 		
 	}
 
